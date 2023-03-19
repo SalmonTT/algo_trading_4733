@@ -1,4 +1,7 @@
 # algo_trading_4733
+
+**Note**: Don't include dataset in this repo. Please store them in a separate directory locally.
+
 Developing and Evaluating Intraday Trading Strategies Using Market Data
 
 In this project, you will develop and evaluate intraday trading strategies using market data from a simulated intraday market data. 
@@ -18,13 +21,58 @@ Two market generators are provided (mkdata.py and mkdata2.py) and both generate 
 'Offer Price': offer_prices,
 'Offer Quantity': offer_quantities
 ```
+## Data Sources:
+[TrueFX](https://www.truefx.com/): tick data of currency pairs. 
+- Note that for currency pairs, there are no volume data available due to the scale of the market. You can only
+obtain timestamp, bid price and ask price. 
 
-However, we can also use [TrueFX](https://www.truefx.com/) to obtain tick data of currency pairs. 
+[Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/):
+- Tick data for almost everything (daily download only)
 
 ## Stage 2: Create Bar Data
-You will create bar data and you will explain the different kind of bar data you managed to create.  
-Types of bar data:
-- time bars
+You will create bar data and explain the different kind of bar data you managed to create.  
+### Motivation:
+- How to deal with the irregularities of the arrival of bars is the focus of this stage.
+- This stage follows Chapter 2 from Marcos de Lopez's *Advances in Financial Machine Learning*.
+
+### Types of bar data:
+#### Standard Bars:
+Given that these bars arrive at irregular frequencies, we call this series of bars inhomogeneous series. 
+Standard bars transform them from inhomogeneous series to homogeneous series derived from regular sampling.  
+
+Includes: ```['timestamp', 'vwap', 'open', 'close', 'high', 'low', 'volume']```
+- **Time Bars (avoid)**:
+  - Obtained by sampling information at fixed time intervals (e.g. minute):
+  - Should be avoided for two reasons:
+    1. markets do not process information at constant time interval. Time bars can easily 
+    oversample information during low-activity periods and undersample information during high-activity periods 
+    (think Black Monday).
+    2. Time-sampled series often exhibit poor statistical properties (serial correlation, heteroscedasticity and 
+    non-normality of returns).
+- **Tick Bars**:
+  - Instead of sampling at constant time interval, sample at constant number of transactions (e.g. 1,000 ticks).
+  - Pros: 
+    - Sampling as a function of number of transactions exhibited desirable statistical properties (Gaussian).
+  - Cons: 
+    - Subject to outliers due to certain behaviors from exchanges during conclusion of auctions. 
+    - Each transaction could differ in volume (e.g. 10 transactions each of size 1 vs. 10 transactions each of size
+    1,000).
+- **Volume Bars**:
+  - Sampling every time a pre-defined amount of the security's unites (shares, futures contracts, etc.) have been 
+  exchanged.
+  - Mitigates the size of transaction issue presented in tick bars. Therefore, should be preferred over tick bar.
+- **Dollar Bars**:
+  - Sample an observation every time a pre-defined market value is exchanged (generally in terms of USD for currency
+  pairs). Alternative, could also sample as a function of free-floating market capitalization of a company (stocks) or
+  the outstanding amount of issued debt (fixed income). For currency, perhaps as a function of monetary supply?
+  - Pros: 
+    - Given that the number of outstanding shares often changes multiple times throughout the course of a security's 
+    life (due to corporate actions such as buybacks), dollar bars are robust in the face of these actions.
+#### Information-Driven Bars:
+The purpose of info-driven bars is to sample more frequently when new information arrives to the market.
+- **Tick Imbalance Bars**:
+- **Tick Runs Bars**:
+- **Volume/Dollar Runs Bars**:
 
 ## Stage 3: Trading Strategy Development
 Based on the intraday market data, students will develop their own trading strategy using 
