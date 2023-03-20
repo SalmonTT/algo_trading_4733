@@ -44,7 +44,7 @@ obtain timestamp, bid price and ask price.
        2. go to terminal and install the library using: ```npm install dukascopy-node --save```
        3. go to [this awesome website](https://www.dukascopy-node.app/instruments) to get instructions on
        downloading different asset's tick data. An example for AAPL tick data is:
-       ```npx dukascopy-node -i aaplususd -from 2023-01-11 -to 2023-01-12 -t tick -f csv``` A csv file will be saved
+       ```npx dukascopy-node -i aaplususd -from 2023-01-11 -to 2023-01-12 -t tick -v true -f csv``` A csv file will be saved
        at your download folder (on MacOS it is saved under user/download rather than your usual Download)
 
 ## Stage 2: Create Bar Data
