@@ -53,6 +53,13 @@ You will create bar data and explain the different kind of bar data you managed 
 - How to deal with the irregularities of the arrival of bars is the focus of this stage.
 - This stage follows Chapter 2 from Marcos de Lopez's *Advances in Financial Machine Learning*.
 
+### Resources:
+-  [mlfinlab](https://github.com/hudson-and-thames/mlfinlab): this repo contains pseudo codes for bar construction using the 
+same methods as specified in Marcos de Lopez's book.
+- [bar construction](https://towardsdatascience.com/financial-machine-learning-part-0-bars-745897d4e4ba) this blog describes with code how
+to construct bars (mlfinlab referenced this blog)
+
+
 ### Types of bar data:
 #### Standard Bars:
 Given that these bars arrive at irregular frequencies, we call this series of bars inhomogeneous series. 
