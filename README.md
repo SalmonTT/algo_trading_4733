@@ -1,6 +1,7 @@
 # algo_trading_4733
 
-**Note**: Don't include dataset in this repo. Please store them in a separate directory locally.
+**Note**: Please create a folder called "data" locally to store data. Anything in the folder "data" will not be uploaded to github (including 
+the folder itself).
 
 Developing and Evaluating Intraday Trading Strategies Using Market Data
 
