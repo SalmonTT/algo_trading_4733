@@ -28,6 +28,23 @@ obtain timestamp, bid price and ask price.
 
 [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/):
 - Tick data for almost everything (daily download only)
+- 3 methods to download data from Dukascopy:
+  1. From their website. 
+     - pros: can download tick data of any listed assets
+     - cons: can only download one day of tick data
+  2. Using the function download_fx_data from DataDownloadFunctions.py
+     - pros: can specify date range
+     - cons: can only download FX pairs
+  3. Using [dukascopy-node](https://www.dukascopy-node.app/):
+     - pros: can download pretty much anny assets, can also specify date range
+     - cons: a bit tricky to set up
+     - Set-up:
+       1. install node.js via https://nodejs.dev/en/download/
+       2. go to terminal and install the library using: ```npm install dukascopy-node --save```
+       3. go to [this awesome website](https://www.dukascopy-node.app/instruments) to get instructions on
+       downloading different asset's tick data. An example for AAPL tick data is:
+       ```npx dukascopy-node -i aaplususd -from 2023-01-01 -to 2023-01-12 -t m1 -f csv``` A csv file will be saved
+       at your download folder (on MacOS it is saved under user/download rather than your usual Download)
 
 ## Stage 2: Create Bar Data
 You will create bar data and explain the different kind of bar data you managed to create.  
