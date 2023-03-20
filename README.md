@@ -12,7 +12,7 @@ and develop their own trading strategy based on technical analysis or machine le
 The project will consist of three main stages:
 
 ## Stage 1: Data Acquisition and Preprocessing
-You will collect and preprocess intraday market data from a random generator or from a selected financial instrument or market using Python. 
+You will collect and preprocess intraday market data from a random generator or from a selected financial instrument or market using  Python. 
 The data should include time series of price, volume, and other relevant market variables.  
 Two market generators are provided (mkdata.py and mkdata2.py) and both generate microsecond data with the following columns:
 ```
@@ -22,17 +22,43 @@ Two market generators are provided (mkdata.py and mkdata2.py) and both generate 
 'Offer Price': offer_prices,
 'Offer Quantity': offer_quantities
 ```
-## Market Tick Data Sources:
-[TrueFX](https://www.truefx.com/): tick data of currency pairs. 
+### Distinction between types of market data:
+There are 3 types of market data that could potentially be referred to as tick data:
+- Trade or Time-and-Sales data 
+  - Fields: ```['timestamp', 'price', 'volume', 'direction', 'venue]'```
+  - Each tick represents a trade
+- Quote data:
+  - Fields: ```['timestamp', 'Bid Price', 'Bid Size', 'Ask Price', 'Ask Size']```
+  - Each tick represents a new quote (either ask or bid)
+- FIX messages:
+  - You can revisit the horrors of Q1 Midterm to refresh your memory of FIX messages
+
+The market data generator provided by prof. Donadio is actually a quote data generator. Tick data
+referred in the book my Marcos de Lopez is actually trade data (each tick represents a trade).  
+
+The question becomes: **How do we use the same methods described in Lopez's book to transform quote data?**  
+
+In the next section I will document the different data sources and what kind of market data they offer.  
+
+Resources:
+- [Cleaning Tick and Quote Data](https://machinefactor.tech/blog/cleaning-tick-and-quote-data-1)
+- [Understanding Good Quality FX Tick Data](https://tradermade.com/blog/understanding-good-quality-fx-tick-data)
+- [Quote bars for US Equities](https://www.tickdata.com/product/quote-bars/)
+- [How to Match Trades and Quotes for NYSE Stocks - 2005](https://lirias.kuleuven.be/retrieve/323063)
+  - How to merge trades and quotes datasets (each with their own timestamp)
+- [How to get the most out of US equitiy market data - 2022](https://sander.schwenk-nebbe.com/2021/12/how-to-get-the-most-out-of-us-equity-market-data)
+## Data Sources:
+[TrueFX](https://www.truefx.com/): 
+- Quote data of currency pairs. 
 - Note that for currency pairs, there are no volume data available due to the scale of the market. You can only
 obtain timestamp, bid price and ask price. 
 
 [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/):
-- Tick data for almost everything (daily download only)
+- Quote data for almost everything (daily download only)
 - 3 methods to download data from Dukascopy:
   1. From their website. 
-     - pros: can download tick data of any listed assets
-     - cons: can only download one day of tick data
+     - pros: can download quote data of any listed assets
+     - cons: can only download one day of quote data
   2. Using the function download_fx_data from DataDownloadFunctions.py
      - pros: can specify date range
      - cons: can only download FX pairs
@@ -43,22 +69,24 @@ obtain timestamp, bid price and ask price.
        1. install node.js via https://nodejs.dev/en/download/
        2. go to terminal and install the library using: ```npm install dukascopy-node --save```
        3. go to [this awesome website](https://www.dukascopy-node.app/instruments) to get instructions on
-       downloading different asset's tick data. An example for AAPL tick data is:
-       ```npx dukascopy-node -i aaplususd -from 2023-01-11 -to 2023-01-12 -t tick -v true -f csv``` A csv file will be saved
+       downloading different asset's quote data. An example for AAPL quote data is:
+       ```npx dukascopy-node -i aaplususd -from 2023-01-01 -to 2023-01-12 -t m1 -f csv``` A csv file will be saved
        at your download folder (on MacOS it is saved under user/download rather than your usual Download)
+
+[Polygon.io](https://polygon.io/)
+- To access trades data $79/month
+- To access trades and quotes data $200/month
+
+[BitMex exchange](https://public.bitmex.com/?prefix=data)
+- Free Trades and Quotes data from the BitMex exchange
+- Includes multiple crypto assets
+- So far can only manually download daily .csv files
 
 ## Stage 2: Create Bar Data
 You will create bar data and explain the different kind of bar data you managed to create.  
 ### Motivation:
 - How to deal with the irregularities of the arrival of bars is the focus of this stage.
 - This stage follows Chapter 2 from Marcos de Lopez's *Advances in Financial Machine Learning*.
-
-### Resources:
--  [mlfinlab](https://github.com/hudson-and-thames/mlfinlab): this repo contains pseudo codes for bar construction using the 
-same methods as specified in Marcos de Lopez's book.
-- [bar construction](https://towardsdatascience.com/financial-machine-learning-part-0-bars-745897d4e4ba) this blog describes with code how
-to construct bars (mlfinlab referenced this blog)
-
 
 ### Types of bar data:
 #### Standard Bars:
