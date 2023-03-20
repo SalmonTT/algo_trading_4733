@@ -12,7 +12,7 @@ and develop their own trading strategy based on technical analysis or machine le
 The project will consist of three main stages:
 
 ## Stage 1: Data Acquisition and Preprocessing
-You will collect and preprocess intraday market data from a random generator or from a selected financial instrument or market using  Python. 
+You will collect and preprocess intraday market data from a random generator or from a selected financial instrument or market using Python. 
 The data should include time series of price, volume, and other relevant market variables.  
 Two market generators are provided (mkdata.py and mkdata2.py) and both generate microsecond data with the following columns:
 ```
@@ -22,7 +22,7 @@ Two market generators are provided (mkdata.py and mkdata2.py) and both generate 
 'Offer Price': offer_prices,
 'Offer Quantity': offer_quantities
 ```
-## Data Sources:
+## Market Tick Data Sources:
 [TrueFX](https://www.truefx.com/): tick data of currency pairs. 
 - Note that for currency pairs, there are no volume data available due to the scale of the market. You can only
 obtain timestamp, bid price and ask price. 
